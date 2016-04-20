@@ -1,5 +1,5 @@
 package modelo;
-
+// comentario Git
 public interface Interfaz1 {
 	public int metodo1(String param1, int param2);
 

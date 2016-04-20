@@ -21,7 +21,7 @@ public class AccesoDatos {
 			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/information_schema", usuario, clave);
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
-			return;
+			System.exit(-1);
 		}
 		System.out.println("Conexion establecida con la bd " + bd);
 	}

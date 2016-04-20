@@ -60,7 +60,7 @@ public class SimpleTableDemo extends JPanel {
 
 	
 		String[][] datos = 
-				new AccesoDatos().getRegistrosTablaBD("test", "borrame");
+				new AccesoDatos().getRegistrosTablaBD("paro", "provincias");
 		
 		
 		String[][] destino = new String[datos.length - 1][];
