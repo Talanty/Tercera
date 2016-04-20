@@ -23,7 +23,7 @@ public class AccesoDatos {
 			System.out.println(e.getMessage());
 			System.exit(-1);
 		}
-		System.out.println("Conexion establecida con la bd " + bd);
+		//System.out.println("Conexion establecida con la bd " + bd);
 	}
 
 	public ArrayList<String> getSchemas() {
@@ -36,7 +36,7 @@ public class AccesoDatos {
 			String registro;
 			while (rs.next()) {
 				registro = rs.getString(1);
-				System.out.println(registro);
+				//System.out.println(registro);
 				listaBD.add(registro);
 			}
 		} catch (SQLException e) {
@@ -54,7 +54,7 @@ public class AccesoDatos {
 			String registro;
 			while (rs.next()) {
 				registro = rs.getString("table_name");
-				System.out.println(registro);
+				//System.out.println(registro);
 				listaTablas.add(registro);
 			}
 		} catch (SQLException e) {
@@ -83,18 +83,18 @@ public class AccesoDatos {
 			// Ponemos los nombres de las columnas
 			for (int j = 1; j <= numColumnas; j++) {
 				registros[0][j-1] = md.getColumnName(j);
-				System.out.print(md.getColumnName(j) + ",");
+				//System.out.print(md.getColumnName(j) + ",");
 			}
-			System.out.println("");
+			//System.out.println("");
 			// iteramos en los datos
 			int i = 1;
 			rs.beforeFirst();
 			while (rs.next()) {				
 				for (int j = 1; j <= numColumnas; j++) {
 					registros[i][j-1] = rs.getString(j);
-					System.out.print(rs.getString(j) + ",");
+					//System.out.print(rs.getString(j) + ",");
 				}
-				System.out.println("");
+				//System.out.println("");
 				i++;
 			}
 		} catch (SQLException e) {
