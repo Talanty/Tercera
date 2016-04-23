@@ -7,6 +7,9 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Vector;
+
+import javax.swing.table.DefaultTableModel;
 
 public class AccesoDatos {
 	private Connection con;
@@ -23,7 +26,7 @@ public class AccesoDatos {
 			System.out.println(e.getMessage());
 			System.exit(-1);
 		}
-		//System.out.println("Conexion establecida con la bd " + bd);
+		// System.out.println("Conexion establecida con la bd " + bd);
 	}
 
 	public ArrayList<String> getSchemas() {
@@ -36,7 +39,7 @@ public class AccesoDatos {
 			String registro;
 			while (rs.next()) {
 				registro = rs.getString(1);
-				//System.out.println(registro);
+				// System.out.println(registro);
 				listaBD.add(registro);
 			}
 		} catch (SQLException e) {
@@ -54,7 +57,7 @@ public class AccesoDatos {
 			String registro;
 			while (rs.next()) {
 				registro = rs.getString("table_name");
-				//System.out.println(registro);
+				// System.out.println(registro);
 				listaTablas.add(registro);
 			}
 		} catch (SQLException e) {
@@ -63,7 +66,6 @@ public class AccesoDatos {
 		return listaTablas;
 	}
 
-	
 	public String[][] getRegistrosTablaBD(String db, String tabla) {
 
 		this.getConexion();
@@ -75,26 +77,26 @@ public class AccesoDatos {
 
 			ResultSetMetaData md = rs.getMetaData();
 			int numColumnas = md.getColumnCount();
-			rs.last();  //ponemos el puntero del cursor al final
+			rs.last(); // ponemos el puntero del cursor al final
 			int numFilas = rs.getRow();
 			registros = new String[numFilas + 1][numColumnas];
-			//rs.first(); // volvemos a poner el cursor en el principio del
-						// ResultSet.
+			// rs.first(); // volvemos a poner el cursor en el principio del
+			// ResultSet.
 			// Ponemos los nombres de las columnas
 			for (int j = 1; j <= numColumnas; j++) {
-				registros[0][j-1] = md.getColumnName(j);
-				//System.out.print(md.getColumnName(j) + ",");
+				registros[0][j - 1] = md.getColumnName(j);
+				// System.out.print(md.getColumnName(j) + ",");
 			}
-			//System.out.println("");
+			// System.out.println("");
 			// iteramos en los datos
 			int i = 1;
 			rs.beforeFirst();
-			while (rs.next()) {				
+			while (rs.next()) {
 				for (int j = 1; j <= numColumnas; j++) {
-					registros[i][j-1] = rs.getString(j);
-					//System.out.print(rs.getString(j) + ",");
+					registros[i][j - 1] = rs.getString(j);
+					// System.out.print(rs.getString(j) + ",");
 				}
-				//System.out.println("");
+				// System.out.println("");
 				i++;
 			}
 		} catch (SQLException e) {
@@ -102,11 +104,12 @@ public class AccesoDatos {
 		}
 		return registros;
 	}
+
 	// Método alternativo
 	// Obtiene los datos del ResultSet (Jose David)
 	// Usa además el método creaString de la claseArrayListToArray
 	// para convertirlo a String [][]
-	public ArrayList<ArrayList<String>> getRegistroTablaBD(String tabla, String bd) {
+	public ArrayList<ArrayList<String>> getRegistrosTablaBD1(String tabla, String bd) {
 		ArrayList<ArrayList<String>> lista = new ArrayList<>();
 		this.getConexion();
 		try {
@@ -134,4 +137,33 @@ public class AccesoDatos {
 		return lista;
 	}
 
+	public DefaultTableModel getRegistrosTablaBD_DTM(String tabla, String bd) {
+		this.getConexion();
+
+		try {
+			Statement sentencia = con.createStatement();
+			ResultSet rs = sentencia.executeQuery("SELECT * FROM " + bd + "." + tabla);
+			ResultSetMetaData rsmd = rs.getMetaData();
+
+			// nombres de las columnas
+			Vector<String> nombreColumnas = new Vector<String>();
+			int numCols = rsmd.getColumnCount();
+			for (int col = 1; col <= numCols; col++) {
+				nombreColumnas.add(rsmd.getColumnName(col));
+			}
+			// datos de la tabla
+			Vector<Vector<Object>> datos = new Vector<Vector<Object>>();
+			while (rs.next()) {
+				Vector<Object> vector = new Vector<Object>();
+				for (int col = 1; col <= numCols; col++) {
+					vector.add(rs.getObject(col));
+				}
+				datos.add(vector);
+			}
+			return new DefaultTableModel(datos, nombreColumnas);
+		} catch (SQLException e) {
+				System.out.println("Ooops, sql!");
+		}
+		return null;
+	}
 }

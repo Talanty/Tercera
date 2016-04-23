@@ -10,9 +10,7 @@ import java.util.*;
 import java.awt.*;
 
 public class ConsultaCatalogoMySQL extends JPanel {
-	/**
-	 * 
-	 */
+	static JFrame frame;
 	private static final long serialVersionUID = 1L;
 	String bbdd, tabla;
 	JList l_bd;
@@ -20,7 +18,8 @@ public class ConsultaCatalogoMySQL extends JPanel {
 	JTable t_registros;
 	String newline = "\n";
 	DefaultListModel lmBD, lmT;
-	MiModeloTabla tm;
+	// MiModeloTabla tm;
+	DefaultTableModel tm;
 
 	@SuppressWarnings("unchecked")
 	public ConsultaCatalogoMySQL() {
@@ -43,15 +42,16 @@ public class ConsultaCatalogoMySQL extends JPanel {
 
 		l_tablas.addListSelectionListener(new ListaTablasHandler());
 
-		/* JTable , con los registros de una bd->tabla */
-		tm = new MiModeloTabla();
-		t_registros = new JTable(tm);
+		tm = null;
+		
+		t_registros = new JTable();
+		
 
 		JScrollPane bdPane = new JScrollPane(l_bd);
 
 		JScrollPane tablasPane = new JScrollPane(l_tablas, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-
+		
 		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		add(splitPane, BorderLayout.CENTER);
 
@@ -82,7 +82,7 @@ public class ConsultaCatalogoMySQL extends JPanel {
 	}
 
 	class ListaBDatosHandler implements ListSelectionListener {
-		@SuppressWarnings({ "unchecked", "rawtypes" })
+		@SuppressWarnings({ "unchecked" })
 		public void valueChanged(ListSelectionEvent evt) {
 			if (!evt.getValueIsAdjusting()) {
 				bbdd = l_bd.getSelectedValue().toString();
@@ -97,96 +97,17 @@ public class ConsultaCatalogoMySQL extends JPanel {
 
 	class ListaTablasHandler implements ListSelectionListener {
 		public void valueChanged(ListSelectionEvent evt) {
-			if (!evt.getValueIsAdjusting()) {
+			if (!evt.getValueIsAdjusting() && (l_tablas.getSelectedValue() != null) ) {
 				tabla = (String) l_tablas.getSelectedValue();
-				System.out.println(tabla);
-				tm.setPropiedades();
-			}
-
-		}
-	}
-
-	@SuppressWarnings("serial")
-	class MiModeloTabla extends AbstractTableModel {
-
-		private String[] nombreColumnas;
-		private Object[][] datos;
-
-		public MiModeloTabla() {
-			super();
-			this.setPropiedades();
-		}
-
-		public void setPropiedades() {
-			
-			try {
 				System.out.println(bbdd + "," + tabla);
-				String[][] datosTodos = new AccesoDatos().getRegistrosTablaBD(bbdd, tabla);
-				nombreColumnas = datosTodos[0];
-				datos = new String[datosTodos.length - 1][];
-				System.arraycopy(datosTodos, 1, datos, 0, datosTodos.length - 1);
-			} catch (NullPointerException e) {
-				
-				System.out.println("Ooops");
+				tm = new AccesoDatos().getRegistrosTablaBD_DTM(tabla, bbdd);
+				t_registros.setModel(tm);
+				//frame.pack();
 			}
 		}
-
-		public int getColumnCount() {
-			if (nombreColumnas != null)
-				return nombreColumnas.length;
-			else
-				return 0;
-		}
-
-		public int getRowCount() {
-			if (datos != null)
-				return datos.length;
-			else
-				return 0;
-		}
-
-		public String getColumnName(int col) {
-			return nombreColumnas[col];
-		}
-
-		public Object getValueAt(int row, int col) {
-			return datos[row][col];
-		}
-
-		/*
-		 * JTable uses this method to determine the default renderer/ editor for
-		 * each cell. If we didn't implement this method, then the last column
-		 * would contain text ("true"/"false"), rather than a check box.
-		 */
-		public Class getColumnClass(int c) {
-			return getValueAt(0, c).getClass();
-		}
-
-		/*
-		 * Don't need to implement this method unless your table's editable.
-		 */
-		public boolean isCellEditable(int row, int col) {
-			// Note that the data/cell address is constant,
-			// no matter where the cell appears onscreen.
-			if (col < 2) {
-				return false;
-			} else {
-				return true;
-			}
-		}
-
-		/*
-		 * Don't need to implement this method unless your table's data can
-		 * change.
-		 */
-		public void setValueAt(Object value, int row, int col) {
-			datos[row][col] = value;
-			fireTableCellUpdated(row, col);
-		}
-
 	}
 
-	public static void main(String[] args) {
+		public static void main(String[] args) {
 
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -198,7 +119,7 @@ public class ConsultaCatalogoMySQL extends JPanel {
 	private static void createAndShowGUI() {
 		// Create and set up the window.
 
-		JFrame frame = new JFrame("Consulta catálogo mySQL");
+		frame = new JFrame("Consulta catálogo mySQL");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// Create and set up the content pane.

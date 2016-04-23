@@ -17,7 +17,7 @@ import modelo.Interfaz1;
 public class ManejoEventos extends JFrame
 // implements ActionListener, Interfaz1
 {
-	// private Interfaz1 intf1; se puede definir un objeto con tipo interfaz
+	private Interfaz1 intf1; // se puede definir un objeto con tipo interfaz
 	private JButton boton;
 	private JLabel etiqueta;
 	private JTextField texto;
@@ -26,6 +26,7 @@ public class ManejoEventos extends JFrame
 	public ManejoEventos() throws HeadlessException {
 
 		super();
+
 		// this.intf1.metodo1("123", 3);
 		this.boton = new JButton();
 		this.etiqueta = new JLabel("Mensaje");
@@ -35,15 +36,32 @@ public class ManejoEventos extends JFrame
 		String[] numeros = { "un", "dos", "tres" };
 		combo = new JComboBox(numeros);
 		this.texto = new JTextField("abcdefgh");
-    
+
 		this.setLayout(new FlowLayout());
 		// gestión centralizada del evento
 		/*
 		 * boton.addActionListener(this); combo.addActionListener(this);
 		 */
 		ComboListener cL = new ComboListener();
-		boton.addActionListener(new BotonListener());
-		combo.addActionListener(cL);
+		// boton.addActionListener(new BotonListener());
+		combo.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent evt) {
+				JComboBox combo = (JComboBox) evt.getSource();
+				texto.setText(combo.getSelectedItem().toString());
+			}
+		});
+		boton.addActionListener(new ActionListener() {
+			/* Clase interna anónima */
+			@Override
+			public void actionPerformed(ActionEvent evt) {
+				// TODO Auto-generated method stub
+				JButton boton = (JButton) evt.getSource();
+				texto.setText(boton.getText());
+			}
+		});
+		// combo.addActionListener(cL);
 		contenido.add(boton);
 		contenido.add(combo);
 		contenido.add(texto);
@@ -56,25 +74,24 @@ public class ManejoEventos extends JFrame
 		@Override
 		public void actionPerformed(ActionEvent evt) {
 			JButton boton = (JButton) evt.getSource();
-			//Class<? extends Object> clase = objeto.getClass();
+			// Class<? extends Object> clase = objeto.getClass();
 
 			// texto.setText(evt.getActionCommand());
 			texto.setText(boton.getText());
-			
 
 		}
 
 	}
+
 	class ComboListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent evt) {
 			JComboBox combo = (JComboBox) evt.getSource();
-			//Class<? extends Object> clase = objeto.getClass();
+			// Class<? extends Object> clase = objeto.getClass();
 
 			// texto.setText(evt.getActionCommand());
 			texto.setText(combo.getSelectedItem().toString());
-			
 
 		}
 
