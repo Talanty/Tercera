@@ -10,7 +10,6 @@ import java.util.*;
 import java.awt.*;
 
 public class ConsultaCatalogoMySQL extends JPanel {
-	static JFrame frame;
 	private static final long serialVersionUID = 1L;
 	String bbdd, tabla;
 	JList l_bd;
@@ -18,7 +17,7 @@ public class ConsultaCatalogoMySQL extends JPanel {
 	JTable t_registros;
 	String newline = "\n";
 	DefaultListModel lmBD, lmT;
-	// MiModeloTabla tm;
+	
 	DefaultTableModel tm;
 
 	@SuppressWarnings("unchecked")
@@ -117,9 +116,9 @@ public class ConsultaCatalogoMySQL extends JPanel {
 	}
 
 	private static void createAndShowGUI() {
-		// Create and set up the window.
+		
 
-		frame = new JFrame("Consulta catálogo mySQL");
+		JFrame frame = new JFrame("Consulta catálogo mySQL");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// Create and set up the content pane.
