@@ -51,7 +51,7 @@ public class ConsultaCatalogoMySQL extends JPanel {
 		JScrollPane tablasPane = new JScrollPane(l_tablas, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		
-		JScrollPane registroPane = new JScrollPane();
+		JScrollPane registroPane = new JScrollPane(t_registros);
 		
 		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		add(splitPane, BorderLayout.CENTER);
