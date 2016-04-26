@@ -53,11 +53,11 @@ public class ConsultaCatalogoMySQL extends JPanel {
 		
 		JScrollPane registroPane = new JScrollPane(t_registros);
 		
-		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 		add(splitPane, BorderLayout.CENTER);
 
 		JPanel panelSuperior = new JPanel();
-		panelSuperior.setLayout(new BoxLayout(panelSuperior, BoxLayout.X_AXIS));
+		panelSuperior.setLayout(new BoxLayout(panelSuperior, BoxLayout.Y_AXIS));
 		JPanel bdContainer = new JPanel(new GridLayout(1, 1));
 		bdContainer.setBorder(BorderFactory.createTitledBorder("Bases de datos"));
 		bdContainer.add(bdPane);
@@ -67,19 +67,20 @@ public class ConsultaCatalogoMySQL extends JPanel {
 		regsContainer.add(registroPane);
 		tablasPane.setPreferredSize(new Dimension(300, 100));
 		panelSuperior.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 5));
-		panelSuperior.add(bdContainer);
-		panelSuperior.add(regsContainer);
-
+		
+		JPanel panelinferior = new JPanel(new BorderLayout());
+		JPanel tablasContainer = new JPanel(new GridLayout(1, 1));
 		panelSuperior.setMinimumSize(new Dimension(400, 50));
 		panelSuperior.setPreferredSize(new Dimension(400, 110));
 		splitPane.add(panelSuperior);
 
-		JPanel panelinferior = new JPanel(new BorderLayout());
-		JPanel tablasContainer = new JPanel(new GridLayout(1, 1));
-		tablasContainer.setBorder(BorderFactory.createTitledBorder("Tablas"));
-		panelinferior.add(tablasContainer, BorderLayout.CENTER);
+		panelinferior.add(regsContainer, BorderLayout.CENTER);
 		tablasContainer.add(tablasPane);
 		panelinferior.setPreferredSize(new Dimension(450, 135));
+		
+		panelSuperior.add(bdContainer);
+		panelSuperior.add(tablasContainer);
+		
 		splitPane.add(panelinferior);
 	}
 
