@@ -51,6 +51,8 @@ public class ConsultaCatalogoMySQL extends JPanel {
 		JScrollPane tablasPane = new JScrollPane(l_tablas, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		
+		JScrollPane registroPane = new JScrollPane();
+		
 		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 		add(splitPane, BorderLayout.CENTER);
 
@@ -61,7 +63,8 @@ public class ConsultaCatalogoMySQL extends JPanel {
 		bdContainer.add(bdPane);
 		JPanel regsContainer = new JPanel(new GridLayout(1, 1));
 		regsContainer.setBorder(BorderFactory.createTitledBorder("Registros"));
-		regsContainer.add(t_registros);
+		//regsContainer.add(t_registros);
+		regsContainer.add(registroPane);
 		tablasPane.setPreferredSize(new Dimension(300, 100));
 		panelSuperior.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 5));
 		panelSuperior.add(bdContainer);

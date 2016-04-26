@@ -17,7 +17,7 @@ public class AccesoDatos {
 	private String host = "localhost";
 	private String bd = "information_schema";
 	private String usuario = "root";
-	private String clave = "elrincon";
+	private String clave = "";
 
 	public void getConexion() {
 		try {
