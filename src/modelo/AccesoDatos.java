@@ -28,7 +28,18 @@ public class AccesoDatos {
 		}
 		// System.out.println("Conexion establecida con la bd " + bd);
 	}
-
+public void getConexionSQLServer() {
+		
+		try {
+			con = DriverManager.getConnection(
+					"jdbc:sqlserver://localhost;instanceName=SQLExpress;integratedSecurity=true;databaseName=AdventureWorks2012",
+					"BrulL", "");
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			System.exit(-1);
+		}
+		 System.out.println("Conexión establecida con SQL Server");
+	}
 	public ArrayList<String> getSchemas() {
 		ArrayList<String> listaBD = new ArrayList<String>();
 		this.getConexion();
@@ -111,7 +122,7 @@ public class AccesoDatos {
 	// para convertirlo a String [][]
 	public ArrayList<ArrayList<String>> getRegistrosTablaBD1(String tabla, String bd) {
 		ArrayList<ArrayList<String>> lista = new ArrayList<>();
-		this.getConexion();
+		this.getConexionSQLServer();
 		try {
 			Statement sentencia = con.createStatement();
 			ResultSet rs = sentencia.executeQuery("SELECT * FROM " + bd + "." + tabla);

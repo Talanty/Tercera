@@ -23,7 +23,8 @@ public class ConsultaCatalogoMySQL extends JPanel {
 	@SuppressWarnings("unchecked")
 	public ConsultaCatalogoMySQL() {
 		super(new BorderLayout());
-
+		new AccesoDatos().getConexionSQLServer();
+		System.exit(0);
 		/* JList de bdatos */
 		ArrayList<String> bdatos = new AccesoDatos().getSchemas();
 		lmBD = new DefaultListModel();
@@ -50,37 +51,36 @@ public class ConsultaCatalogoMySQL extends JPanel {
 
 		JScrollPane tablasPane = new JScrollPane(l_tablas, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-		
-		JScrollPane registroPane = new JScrollPane(t_registros);
-		
-		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+		JScrollPane registrosPane = new JScrollPane(t_registros);
+
+		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+		t_registros.setAutoCreateRowSorter(	true);
 		add(splitPane, BorderLayout.CENTER);
 
 		JPanel panelSuperior = new JPanel();
-		panelSuperior.setLayout(new BoxLayout(panelSuperior, BoxLayout.Y_AXIS));
+		panelSuperior.setLayout(new BoxLayout(panelSuperior, BoxLayout.X_AXIS));
 		JPanel bdContainer = new JPanel(new GridLayout(1, 1));
 		bdContainer.setBorder(BorderFactory.createTitledBorder("Bases de datos"));
 		bdContainer.add(bdPane);
 		JPanel regsContainer = new JPanel(new GridLayout(1, 1));
 		regsContainer.setBorder(BorderFactory.createTitledBorder("Registros"));
 		//regsContainer.add(t_registros);
-		regsContainer.add(registroPane);
+		regsContainer.add(registrosPane);
 		tablasPane.setPreferredSize(new Dimension(300, 100));
 		panelSuperior.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 5));
-		
-		JPanel panelinferior = new JPanel(new BorderLayout());
-		JPanel tablasContainer = new JPanel(new GridLayout(1, 1));
+		panelSuperior.add(bdContainer);
+		panelSuperior.add(regsContainer);
+
 		panelSuperior.setMinimumSize(new Dimension(400, 50));
 		panelSuperior.setPreferredSize(new Dimension(400, 110));
 		splitPane.add(panelSuperior);
 
-		panelinferior.add(regsContainer, BorderLayout.CENTER);
+		JPanel panelinferior = new JPanel(new BorderLayout());
+		JPanel tablasContainer = new JPanel(new GridLayout(1, 1));
+		tablasContainer.setBorder(BorderFactory.createTitledBorder("Tablas"));
+		panelinferior.add(tablasContainer, BorderLayout.CENTER);
 		tablasContainer.add(tablasPane);
 		panelinferior.setPreferredSize(new Dimension(450, 135));
-		
-		panelSuperior.add(bdContainer);
-		panelSuperior.add(tablasContainer);
-		
 		splitPane.add(panelinferior);
 	}
 
@@ -105,7 +105,7 @@ public class ConsultaCatalogoMySQL extends JPanel {
 				System.out.println(bbdd + "," + tabla);
 				tm = new AccesoDatos().getRegistrosTablaBD_DTM(tabla, bbdd);
 				t_registros.setModel(tm);
-				//frame.pack();
+				
 			}
 		}
 	}
@@ -121,17 +121,19 @@ public class ConsultaCatalogoMySQL extends JPanel {
 
 	private static void createAndShowGUI() {
 		
-
-		JFrame frame = new JFrame("Consulta catálogo mySQL");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-		// Create and set up the content pane.
-		JComponent newContentPane = new ConsultaCatalogoMySQL();
-		newContentPane.setOpaque(true); // content panes must be opaque
-		frame.setContentPane(newContentPane);
-
-		// Display the window.
-		frame.pack();
-		frame.setVisible(true);
+//
+//		JFrame frame = new JFrame("Consulta catálogo mySQL");
+//		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//
+//		// Create and set up the content pane.
+//		JComponent newContentPane = new ConsultaCatalogoMySQL();
+//		newContentPane.setOpaque(true); // content panes must be opaque
+//		frame.setContentPane(newContentPane);
+//
+//		// Display the window.
+//		frame.pack();
+//		frame.setVisible(true);
+		ArrayList<ArrayList<String>> resultado = new AccesoDatos().getRegistrosTablaBD1("HumanResources.Employee", "AdventureWorks2012");
+	    System.exit(0);
 	}
 }
